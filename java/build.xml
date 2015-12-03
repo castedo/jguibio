@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="gatekeeper">
+    <fail message="Please build using Ant 1.7.0 or higher.">
+        <condition><not><antversion atleast="1.7.0"/></not></condition>
+    </fail>
+    <property name="build.dir" value="${user.dir}/build"/>
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dest.dir}"/>
+    </target>
+    <target name="libs">
+        <copy todir="${dest.dir}/" file="/usr/share/varbj/jars/gson-2.2.2.jar"/>
+    </target>
+    <target name="compile" depends="libs">
+        <mkdir dir="${build.dir}"/>
+        <javac debug="true" debuglevel="source,lines,vars" destdir="${build.dir}" source="1.6" target="1.6" includeantruntime="false">
+            <src path="src"/>
+            <classpath>
+                <pathelement location="${dest.dir}/gson-2.2.2.jar"/>
+            </classpath>
+        </javac>
+    </target>
+    <target name="build" depends="compile">
+        <jar destfile="${dest.dir}/jguibio.jar" basedir="${build.dir}"/>
+    </target>
+</project>
