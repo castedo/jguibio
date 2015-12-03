@@ -1,5 +1,60 @@
 # Java GUI Becomes Input/Output (jguibio)
 
+jguibio runs in front of a Java application to "translate" a Java GUI into JSON
+input and output. GUI events such as windows opening with text and images are
+output as JSON objects with text and images encoded as text.
+
+If certain JSON objects are input, then they are translated into GUI events
+such as closing windows, entering text and clicking buttons.
+
+Example
+=======
+
+Suppose you have a Java application whose entry class is `SillySoft.Main`. Run
+jguibio as such:
+
+```
+java -cp "path/to/jars/*" jguibio.Main SillySoft.Main
+```
+
+where directory `path/to/jars` contains `jguibui.jar`, the Gson jar file and
+the jar file containing the `SillySoft.Main` class. Any arguments for the
+SillySoft.Main can be appended on the command line and they will be passed
+along.
+
+Standard output (stdout) of the SillySoft application will get redirected to
+standard error (stderr).
+
+GUI events just as windows opening will appear as JSON objects on standard
+output such as
+
+```
+{"wid":0,"event":"opened","extract":{"title":"SillySoft Signin","content":["Username","Password",{"button":"Signin"},{"button":"Cancel"},{"png":"AElFTkSuQmCC"}]}}
+```
+
+Each window gets identified with a "wid" number and further events, such as the
+window closing, will use the wid:
+
+```
+{"wid":0,"event":"closed"}
+```
+
+JSON objects such as the following can be input, followed be enter:
+
+```
+["submit", 0, "Signin", "hackman", "sneaky"]
+```
+
+which will result in the clicking of the button labeled "Signin" in the window
+with wid zero after text `hackman` and `sneaky` get input into the first two
+text fields.
+
+The JSON object
+```
+["dispose", 0]
+```
+can be sent to close the window with wid zero.
+
 
 Jar Files
 =========
